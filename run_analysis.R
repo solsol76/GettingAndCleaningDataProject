@@ -12,7 +12,6 @@ library(data.table)
 #read data from files
 subjTest <- read.table("./test/subject_test.txt",col.names=c("SubjectID"))
 subjTrain<- read.table("./train/subject_train.txt",col.names=c("SubjectID"))
-act<- read.table("activity_labels.txt")
 features <- read.table("features.txt",col.names=c("MeasureID", "MeasureName"))
 xTest<- read.table("./test/X_test.txt")
 xTrain<- read.table("./train/X_train.txt")
@@ -53,10 +52,8 @@ colnames(mergedData) <- gsub('\\,',"",names(mergedData), perl = TRUE)
 
 
 #Subsetting the full mergedData to obtain  the mean and standard deviation for each measurement:
-#meancols <- grep("[Mm]ean", colnames(mergedData), value=TRUE)
-#stdcols <- grep("[Ss]td", colnames(mergedData), value=TRUE)
-meanColNum<- grep("[Mm]ean", colnames(mergedData))
-stdColNum<- grep("[Ss]td", colnames(mergedData))
+meanColNum<- grep(".*mean", mergedData$MeasureName)
+stdColNum<- grep(".*std", mergedData$MeasureName)
 subData<- mergedData[, c(meanColNum, stdColNum, 562, 563)]
 
 #Finding the average of each variable for each subject and each activity:
